@@ -7,17 +7,21 @@
 
 import UIKit
 
-class ViewController: UITableViewController, AddTask, ChangeButton
-//, UITableViewDelegate, UITableViewDataSource
-{
+class ViewController: UITableViewController, AddTask, ChangeButton {
     
     var tasks: [Task] = []
+    var tasksTodo: [TaskTodo] = []
     
-    //@IBOutlet var tableView: UITableView!
+    let urlGet = "http://ec2-52-32-105-2.us-west-2.compute.amazonaws.com:8080/all"
+    let urlPost = "http://ec2-52-32-105-2.us-west-2.compute.amazonaws.com:8080/new"
+    let urlPut = "http://ec2-52-32-105-2.us-west-2.compute.amazonaws.com:8080/update/{item_id}"
+    let urlDelete = "http://ec2-52-32-105-2.us-west-2.compute.amazonaws.com:8080/delete/{item_id}"
     
     override func viewDidLoad() {
-      tasks.append(Task(name: "milk"))
-        
+        super.viewDidLoad()
+        tasks.append(Task(name: "milk"))
+        //TODO:
+        getJsonFromUrl()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -46,6 +50,28 @@ class ViewController: UITableViewController, AddTask, ChangeButton
         let vc = segue.destination as! AddTaskController
         vc.delegate = self
     }
+ /////////////
+    /////////////////////////////
+    
+    func getJsonFromUrl() {
+        
+        guard let url = URL(string: urlGet) else { return }
+        
+        URLSession.shared.dataTask(with: url) { (data, response, err) in
+            guard let data = data else { return }
+            
+            do {
+                let list = try JSONDecoder().decode([TaskTodo].self, from: data)
+                print(list)
+            } catch let jsonError {
+                print("Error serializing json:", jsonError)
+            }
+        }.resume()
+    }
+    
+    /////////////////////////////
+    
+   ////////
     
     func addTask(name: String) {
         tasks.append(Task(name: name))
@@ -67,3 +93,13 @@ class Task {
         self.name = name
     }
 }
+
+struct TaskTodo: Decodable {
+    var id = 0
+    var title = ""
+    var completed = false
+}
+
+
+
+
