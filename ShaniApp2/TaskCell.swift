@@ -28,4 +28,5 @@ class TaskCell: UITableViewCell {
     var delegate: ChangeButton?
     var indexP: Int?
     var tasks: [Task]?
+    var tasks2: [TaskTodo]?
 }

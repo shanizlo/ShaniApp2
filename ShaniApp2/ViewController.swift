@@ -22,6 +22,7 @@ class ViewController: UITableViewController, AddTask, ChangeButton {
         tasks.append(Task(name: "milk"))
         //TODO:
         getJsonFromUrl()
+        print(tasksTodo)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -43,6 +44,10 @@ class ViewController: UITableViewController, AddTask, ChangeButton {
         cell.indexP = indexPath.row
         cell.tasks = tasks
         
+        /////////////////////
+        
+        ///////////////////
+        
         return cell
     }
     
@@ -51,27 +56,25 @@ class ViewController: UITableViewController, AddTask, ChangeButton {
         vc.delegate = self
     }
  /////////////
-    /////////////////////////////
     
     func getJsonFromUrl() {
         
         guard let url = URL(string: urlGet) else { return }
         
-        URLSession.shared.dataTask(with: url) { (data, response, err) in
-            guard let data = data else { return }
+        URLSession.shared.dataTask(with: url) { (data, response, error) in
+            guard let jsonData = data else { return }
             
             do {
-                let list = try JSONDecoder().decode([TaskTodo].self, from: data)
-                print(list)
-            } catch let jsonError {
-                print("Error serializing json:", jsonError)
+                self.tasksTodo = try JSONDecoder().decode([TaskTodo].self, from: jsonData)
+                print(self.tasksTodo)
+            } catch {
+                print(error.localizedDescription)
             }
         }.resume()
     }
     
     /////////////////////////////
-    
-   ////////
+
     
     func addTask(name: String) {
         tasks.append(Task(name: name))
@@ -94,12 +97,8 @@ class Task {
     }
 }
 
-struct TaskTodo: Decodable {
+struct TaskTodo: Codable {
     var id = 0
     var title = ""
     var completed = false
 }
-
-
-
-
