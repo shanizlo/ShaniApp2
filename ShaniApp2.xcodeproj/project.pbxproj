@@ -12,6 +12,8 @@
 		C67E119A213429F100E4A8D5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C67E1198213429F100E4A8D5 /* Main.storyboard */; };
 		C67E119C213429F200E4A8D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C67E119B213429F200E4A8D5 /* Assets.xcassets */; };
 		C67E119F213429F200E4A8D5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C67E119D213429F200E4A8D5 /* LaunchScreen.storyboard */; };
+		C67E11A72134346900E4A8D5 /* TaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67E11A62134346900E4A8D5 /* TaskCell.swift */; };
+		C67E11A9213442E300E4A8D5 /* AddTaskController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67E11A8213442E300E4A8D5 /* AddTaskController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,8 @@
 		C67E119B213429F200E4A8D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C67E119E213429F200E4A8D5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C67E11A0213429F200E4A8D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C67E11A62134346900E4A8D5 /* TaskCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCell.swift; sourceTree = "<group>"; };
+		C67E11A8213442E300E4A8D5 /* AddTaskController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,8 +58,10 @@
 		C67E1193213429F100E4A8D5 /* ShaniApp2 */ = {
 			isa = PBXGroup;
 			children = (
+				C67E11A8213442E300E4A8D5 /* AddTaskController.swift */,
 				C67E1194213429F100E4A8D5 /* AppDelegate.swift */,
 				C67E1196213429F100E4A8D5 /* ViewController.swift */,
+				C67E11A62134346900E4A8D5 /* TaskCell.swift */,
 				C67E1198213429F100E4A8D5 /* Main.storyboard */,
 				C67E119B213429F200E4A8D5 /* Assets.xcassets */,
 				C67E119D213429F200E4A8D5 /* LaunchScreen.storyboard */,
@@ -135,6 +141,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C67E1197213429F100E4A8D5 /* ViewController.swift in Sources */,
+				C67E11A72134346900E4A8D5 /* TaskCell.swift in Sources */,
+				C67E11A9213442E300E4A8D5 /* AddTaskController.swift in Sources */,
 				C67E1195213429F100E4A8D5 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -280,6 +288,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = ShaniApp2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -297,6 +306,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = ShaniApp2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
