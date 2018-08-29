@@ -18,7 +18,7 @@ class TaskCell: UITableViewCell {
     @IBOutlet weak var taskNameLabel: UILabel!
     
     @IBAction func checkBoxAction(_ sender: Any) {
-        if tasks![indexP!].checked {
+        if tasksArr![indexP!].completed {
             delegate?.changeButton(checked: false, index: indexP)
         } else {
             delegate?.changeButton(checked: true, index: indexP)
@@ -27,6 +27,5 @@ class TaskCell: UITableViewCell {
     
     var delegate: ChangeButton?
     var indexP: Int?
-    var tasks: [Task]?
-    var tasks2: [TaskTodo]?
+    var tasksArr: [TaskTodo]?
 }

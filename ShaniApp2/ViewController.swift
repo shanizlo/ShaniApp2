@@ -9,7 +9,6 @@ import UIKit
 
 class ViewController: UITableViewController, AddTask, ChangeButton {
     
-    var tasks: [Task] = []
     var tasksTodo: [TaskTodo] = []
     
     let urlGet = "http://ec2-52-32-105-2.us-west-2.compute.amazonaws.com:8080/all"
@@ -19,22 +18,20 @@ class ViewController: UITableViewController, AddTask, ChangeButton {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tasks.append(Task(name: "milk"))
-        //TODO:
+        tasksTodo.append(TaskTodo(id: 303, title: "Soda", completed: false))
         getJsonFromUrl()
-        print(tasksTodo)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tasks.count
+        return tasksTodo.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell" , for: indexPath) as! TaskCell
         
-        cell.taskNameLabel.text = tasks[indexPath.row].name
-        
-        if tasks[indexPath.row].checked {
+        cell.taskNameLabel.text = tasksTodo[indexPath.row].title
+
+        if tasksTodo[indexPath.row].completed {
             cell.checkBoxOutlet.setTitle("✓", for: UIControlState.normal)
         } else {
             cell.checkBoxOutlet.setTitle("", for: UIControlState.normal)
@@ -42,11 +39,8 @@ class ViewController: UITableViewController, AddTask, ChangeButton {
         
         cell.delegate = self
         cell.indexP = indexPath.row
-        cell.tasks = tasks
+        cell.tasksArr = tasksTodo
         
-        /////////////////////
-        
-        ///////////////////
         
         return cell
     }
@@ -55,7 +49,6 @@ class ViewController: UITableViewController, AddTask, ChangeButton {
         let vc = segue.destination as! AddTaskController
         vc.delegate = self
     }
- /////////////
     
     func getJsonFromUrl() {
         
@@ -73,27 +66,16 @@ class ViewController: UITableViewController, AddTask, ChangeButton {
         }.resume()
     }
     
-    /////////////////////////////
-
+    //ToDo: genereate new id for new tasks
+    var newId = 1
     
-    func addTask(name: String) {
-        tasks.append(Task(name: name))
-        tableView.reloadData()
+    func addTask(name:String) {
+        tasksTodo.append(TaskTodo(id: newId, title: name, completed: false))
     }
     
     func changeButton(checked: Bool, index: Int?) {
-        tasks[index!].checked = checked
+        tasksTodo[index!].completed = checked
         tableView.reloadData()
-    }
-}
-
-class Task {
-    var name = ""
-    var checked = false
-    
-    convenience init(name: String) {
-        self.init()
-        self.name = name
     }
 }
 
