@@ -17,9 +17,9 @@ class ViewController: UITableViewController, AddTask, ChangeButton {
     let urlDelete = "http://ec2-52-32-105-2.us-west-2.compute.amazonaws.com:8080/delete/{item_id}"
     
     override func viewDidLoad() {
-        super.viewDidLoad()
-        tasksTodo.append(TaskTodo(id: 303, title: "Soda", completed: false))
         getJsonFromUrl()
+        tasksTodo.append(TaskTodo(id: 303, title: "Soda", completed: false))
+        super.viewDidLoad()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -40,8 +40,7 @@ class ViewController: UITableViewController, AddTask, ChangeButton {
         cell.delegate = self
         cell.indexP = indexPath.row
         cell.tasksArr = tasksTodo
-        
-        
+                
         return cell
     }
     
@@ -53,8 +52,8 @@ class ViewController: UITableViewController, AddTask, ChangeButton {
     func getJsonFromUrl() {
         
         guard let url = URL(string: urlGet) else { return }
-        
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
+        let session = URLSession.shared
+        session.dataTask(with: url) { (data, response, error) in
             guard let jsonData = data else { return }
             
             do {
