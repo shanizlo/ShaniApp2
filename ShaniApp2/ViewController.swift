@@ -11,15 +11,23 @@ class ViewController: UITableViewController, AddTask, ChangeButton {
     
     var tasksTodo: [TaskTodo] = []
     
+    //ToDo: genereate new id for new tasks
+    var newId = 1
+    
     let urlGet = "http://ec2-52-32-105-2.us-west-2.compute.amazonaws.com:8080/all"
     let urlPost = "http://ec2-52-32-105-2.us-west-2.compute.amazonaws.com:8080/new"
     let urlPut = "http://ec2-52-32-105-2.us-west-2.compute.amazonaws.com:8080/update/{item_id}"
     let urlDelete = "http://ec2-52-32-105-2.us-west-2.compute.amazonaws.com:8080/delete/{item_id}"
     
     override func viewDidLoad() {
-        getJsonFromUrl()
-        tasksTodo.append(TaskTodo(id: 303, title: "Soda", completed: false))
         super.viewDidLoad()
+        getJsonFromUrl(completion: { [weak self] in
+            self?.tableView.reloadData()
+        })
+        
+        print(tasksTodo)
+        tasksTodo.append(TaskTodo(id: 303, title: "Soda", completed: false))
+        tasksTodo.append(TaskTodo(id: 404, title: "Chuck", completed: false))
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -29,7 +37,7 @@ class ViewController: UITableViewController, AddTask, ChangeButton {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell" , for: indexPath) as! TaskCell
         
-        cell.taskNameLabel.text = tasksTodo[indexPath.row].title
+        cell.taskNameLabel.text = tasksTodo[indexPath.item].title
 
         if tasksTodo[indexPath.row].completed {
             cell.checkBoxOutlet.setTitle("✓", for: UIControlState.normal)
@@ -40,7 +48,7 @@ class ViewController: UITableViewController, AddTask, ChangeButton {
         cell.delegate = self
         cell.indexP = indexPath.row
         cell.tasksArr = tasksTodo
-                
+        
         return cell
     }
     
@@ -49,24 +57,26 @@ class ViewController: UITableViewController, AddTask, ChangeButton {
         vc.delegate = self
     }
     
-    func getJsonFromUrl() {
+    func getJsonFromUrl(completion: @escaping () -> Void) {
+    //why not:
+    //func getJsonFromUrl(completion: () -> ()) {
         
         guard let url = URL(string: urlGet) else { return }
         let session = URLSession.shared
-        session.dataTask(with: url) { (data, response, error) in
+        session.dataTask(with: url) { [weak self] (data, response, error) in
             guard let jsonData = data else { return }
             
             do {
-                self.tasksTodo = try JSONDecoder().decode([TaskTodo].self, from: jsonData)
-                print(self.tasksTodo)
+                self?.tasksTodo = try JSONDecoder().decode([TaskTodo].self, from: jsonData)
+                print(self?.tasksTodo ?? "")
             } catch {
                 print(error.localizedDescription)
             }
+            DispatchQueue.main.async {
+                completion()
+            }
         }.resume()
     }
-    
-    //ToDo: genereate new id for new tasks
-    var newId = 1
     
     func addTask(name:String) {
         tasksTodo.append(TaskTodo(id: newId, title: name, completed: false))
