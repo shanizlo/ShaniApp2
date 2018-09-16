@@ -7,12 +7,10 @@
 
 import UIKit
 
-class ViewController: UITableViewController, AddTask, ChangeButton {
+class TodoListVC: UITableViewController, AddTaskDelegate,  ChangeButton {
     
     var tasksTodo: [TaskTodo] = []
-    
-    //ToDo: genereate new id for new tasks
-    var newId = 1
+    var tempID = 1
     
     let urlGet = "http://ec2-52-32-105-2.us-west-2.compute.amazonaws.com:8080/all"
     let urlPost = "http://ec2-52-32-105-2.us-west-2.compute.amazonaws.com:8080/new"
@@ -23,11 +21,14 @@ class ViewController: UITableViewController, AddTask, ChangeButton {
         super.viewDidLoad()
         getJsonFromUrl(completion: { [weak self] in
             self?.tableView.reloadData()
+            print("test: reloaded view")
         })
         
         print(tasksTodo)
-        tasksTodo.append(TaskTodo(id: 303, title: "Soda", completed: false))
-        tasksTodo.append(TaskTodo(id: 404, title: "Chuck", completed: false))
+    }
+    
+    func reloadList() {
+        viewDidLoad()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -53,15 +54,17 @@ class ViewController: UITableViewController, AddTask, ChangeButton {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let vc = segue.destination as! AddTaskController
-        vc.delegate = self
+        let addTaskController = segue.destination as! AddTaskController
+        addTaskController.addTaskDelegate = self
+        addTaskController.postNewTaskCompletion = {
+            self.tableView.reloadData()
+        }
     }
     
     func getJsonFromUrl(completion: @escaping () -> Void) {
-    //why not:
-    //func getJsonFromUrl(completion: () -> ()) {
         
         guard let url = URL(string: urlGet) else { return }
+        
         let session = URLSession.shared
         session.dataTask(with: url) { [weak self] (data, response, error) in
             guard let jsonData = data else { return }
@@ -78,13 +81,44 @@ class ViewController: UITableViewController, AddTask, ChangeButton {
         }.resume()
     }
     
-    func addTask(name:String) {
-        tasksTodo.append(TaskTodo(id: newId, title: name, completed: false))
-    }
+    
+
+    func taskAdded(name:String) {
+        let parametersJson: [String : Any] = ["id":tempID, "title":name, "completed":false]
+        let jsonDataToPost = try? JSONSerialization.data(withJSONObject: parametersJson)
+        
+        guard let url = URL(string: urlPost) else { return }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = jsonDataToPost
+        
+        let sessionTask = URLSession.shared
+        sessionTask.dataTask(with: request) { [weak self] (data, response, error) in
+            if let response = response {
+                print(response)
+            }
+            
+            if let data = data {
+                print(data)
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data, options: [])
+                    print(json)
+                } catch {
+                    print(error)
+                }
+            DispatchQueue.main.async {
+                self?.viewDidLoad()
+                //self?.tableView.reloadData()
+                self?.navigationController?.popViewController(animated: true)
+            }
+        }
+    }.resume()
+}
     
     func changeButton(checked: Bool, index: Int?) {
         tasksTodo[index!].completed = checked
         tableView.reloadData()
+        viewDidLoad()
     }
 }
 
@@ -93,3 +127,4 @@ struct TaskTodo: Codable {
     var title = ""
     var completed = false
 }
+

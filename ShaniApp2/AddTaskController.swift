@@ -5,26 +5,49 @@
 //  Created by Shani Zlotnik on 27/08/2018.
 //
 
+
 import UIKit
 
-protocol AddTask {
-    func addTask(name: String)
+protocol AddTaskDelegate: class {
+    func taskAdded(name: String)
 }
 
 class AddTaskController: UIViewController {
     
-    var delegate: AddTask?
-
+    weak var addTaskDelegate: AddTaskDelegate?
+    var postNewTaskCompletion: (() -> Void)?
     @IBOutlet weak var taskNameOutlet: UITextField!
     
     @IBAction func addAction(_ sender: Any) {
         if taskNameOutlet.text != "" {
-            delegate?.addTask(name: taskNameOutlet.text!)
-            navigationController?.popViewController(animated: true)
+            addTaskDelegate?.taskAdded(name: taskNameOutlet.text!)
         }
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
+    
 }
+
+
+//class TestVC: UIViewController, AddTaskDelegate {
+//
+//    func postNewTask(name: String, completion: @escaping () -> Void) {
+//
+//    }
+//
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        let addTaskController = segue.destination as! AddTaskController
+//        addTaskController.addTaskDelegate = self
+//    }
+//
+//}
+//
+//
+//class Test2VC: UIViewController, AddTaskDelegate {
+//
+//    func postNewTask(name: String, completion: @escaping () -> Void) {
+//    }
+//
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        let addTaskController = segue.destination as! AddTaskController
+//        addTaskController.addTaskDelegate = self
+//    }
+//}
