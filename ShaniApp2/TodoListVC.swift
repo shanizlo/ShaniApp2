@@ -7,11 +7,12 @@
 
 import UIKit
 
-class TodoListVC: UITableViewController, AddTaskDelegate,  ChangeButton {
+class TodoListVC: UITableViewController, AddTaskDelegate,  ChangeButtonDelegate {
     
     let networking = Networking()
-    var tasksTodo: [TaskTodo] = []
+//    var tasksTodo: [TaskTodo] = []
 //    var tempID = 1
+    var tasksTodo: [Networking.TaskTodo] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,9 +43,13 @@ class TodoListVC: UITableViewController, AddTaskDelegate,  ChangeButton {
             cell.checkBoxOutlet.setTitle("", for: UIControlState.normal)
         }
         
-        cell.delegate = self
+        cell.changeButtonDelegate = self
         cell.indexP = indexPath.row
-        cell.tasksArr = tasksTodo
+        
+//        cell.delegate = self
+//        cell.indexP = indexPath.row
+//        cell.tasksArr = tasksTodo
+//
         
         return cell
     }
@@ -55,6 +60,11 @@ class TodoListVC: UITableViewController, AddTaskDelegate,  ChangeButton {
         addTaskController.postNewTaskCompletion = {
             self.tableView.reloadData()
         }
+//        let taskCellController = segue.destination as! TaskCell
+//        taskCellController.changeButtonDelegate = self
+//        taskCellController.changeButtonCompletion = {
+//            self.tableView.reloadData()
+//        }
     }
 
     func taskAdded(name: String) {
@@ -62,73 +72,55 @@ class TodoListVC: UITableViewController, AddTaskDelegate,  ChangeButton {
             self?.tasksTodo = (self?.networking.tasksTodoArray)!
             self?.reloadList()
             self?.navigationController?.popViewController(animated: true)
+            print("task added (VC)")
             print("test: reloaded view")
         }
     }
     
-//    func getJsonFromUrl(completion: @escaping () -> Void) {
-//
-//        guard let url = URL(string: urlGet) else { return }
-//
-//        let session = URLSession.shared
-//        session.dataTask(with: url) { [weak self] (data, response, error) in
-//            guard let jsonData = data else { return }
-//
-//            do {
-//                self?.tasksTodo = try JSONDecoder().decode([TaskTodo].self, from: jsonData)
-//                print(self?.tasksTodo ?? "")
-//            } catch {
-//                print(error.localizedDescription)
-//            }
-//            DispatchQueue.main.async {
-//                completion()
-//            }
-//        }.resume()
-//    }*
     
+//    func changeButton(checked: Bool, index: Int?) {
+//        tasksTodo[index!].completed = checked
+//        networking.taskUpdatePUT(id: index!,completed: checked) { [weak self] in
+//            self?.tasksTodo = (self?.networking.tasksTodoArray)!
+//            self?.reloadList()
+//            self?.navigationController?.popViewController(animated: true)
+//            print("task edited vc")
+//            print("test: reloaded view")
+//        tableView.reloadData()
+//        viewDidLoad()
+//    }
+//}
     
-
-//    func taskAdded(name:String) {
-//        let parametersJson: [String : Any] = ["id":tempID, "title":name, "completed":false]
-//        let jsonDataToPost = try? JSONSerialization.data(withJSONObject: parametersJson)
+//    func changeButton(index: Int?) {
+//        var tempTask = tasksTodo[index!]
+//        networking.taskUpdatePUT(id: tempTask.id, name: tempTask.title, completed: !tempTask.completed) { [weak self] in
+//            self?.tasksTodo = (self?.networking.tasksTodoArray)!
+//            self?.reloadList()
+//            self?.navigationController?.popViewController(animated: true)
+//            print("task updated (VC)")
+//            print("test: reloaded view")
 //
-//        guard let url = URL(string: networking.urlPost) else { return }
-//        var request = URLRequest(url: url)
-//        request.httpMethod = "POST"
-//        request.httpBody = jsonDataToPost
-//
-//        let sessionTask = URLSession.shared
-//        sessionTask.dataTask(with: request) { [weak self] (data, response, error) in
-//            if let response = response {
-//                print(response)
-//            }
-//
-//            if let data = data {
-//                print(data)
-//                do {
-//                    let json = try JSONSerialization.jsonObject(with: data, options: [])
-//                    print(json)
-//                } catch {
-//                    print(error)
-//                }
-//            DispatchQueue.main.async {
-//                self?.viewDidLoad()
-//                self?.navigationController?.popViewController(animated: true)
-//            }
 //        }
-//    }.resume()
-//}*
+//    }
     
-    func changeButton(checked: Bool, index: Int?) {
-        tasksTodo[index!].completed = checked
-        tableView.reloadData()
-        viewDidLoad()
-    }
-}
+    func changeButton(_ cell: TaskCell) {
+        if let indexPa = tableView.indexPath(for: cell) {
+            let tempTask = tasksTodo[indexPa.row]
+            networking.taskUpdatePUT(id: tempTask.id, name: tempTask.title, completed: !tempTask.completed) { [weak self] in
+                self?.tasksTodo = (self?.networking.tasksTodoArray)!
+                self?.reloadList()
+                self?.navigationController?.popViewController(animated: true)
+                print("task updated (VC)")
+                print("test: reloaded view")
+                }
+            }
+        }
+    
 
-struct TaskTodo: Codable {
-    var id = 0
-    var title = ""
-    var completed = false
-}
 
+//struct TaskTodo: Codable {
+//    var id = 0
+//    var title = ""
+//    var completed = false
+//}
+}
