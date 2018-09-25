@@ -25,29 +25,3 @@ class AddTaskController: UIViewController {
     }
     
 }
-
-
-//class TestVC: UIViewController, AddTaskDelegate {
-//
-//    func postNewTask(name: String, completion: @escaping () -> Void) {
-//
-//    }
-//
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        let addTaskController = segue.destination as! AddTaskController
-//        addTaskController.addTaskDelegate = self
-//    }
-//
-//}
-//
-//
-//class Test2VC: UIViewController, AddTaskDelegate {
-//
-//    func postNewTask(name: String, completion: @escaping () -> Void) {
-//    }
-//
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        let addTaskController = segue.destination as! AddTaskController
-//        addTaskController.addTaskDelegate = self
-//    }
-//}

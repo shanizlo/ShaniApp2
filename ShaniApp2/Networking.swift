@@ -68,12 +68,14 @@ class Networking {
         }.resume()
     }
     
+    
     func taskUpdatePUT(id: Int, name: String, completed: Bool, completion: @escaping () -> Void) {
         
         let parametersJson: [String : Any] = ["id":id, "title": name, "completed":completed]
         let jsonDataToPut = try? JSONSerialization.data(withJSONObject: parametersJson)
         
-        guard let url = URL(string: "\(urlPut) \(id)") else { return }
+        let urlString = urlPut + String(id)
+        guard let url = URL(string: urlString) else { return }
         
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
@@ -96,7 +98,7 @@ class Networking {
                     completion()
                 }
             }
-            }.resume()
+        }.resume()
     }
     
     struct TaskTodo: Codable {

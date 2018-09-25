@@ -55,6 +55,7 @@ class TodoListVC: UITableViewController, AddTaskDelegate,  ChangeButtonDelegate 
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print(segue.identifier)
         let addTaskController = segue.destination as! AddTaskController
         addTaskController.addTaskDelegate = self
         addTaskController.postNewTaskCompletion = {
@@ -66,6 +67,9 @@ class TodoListVC: UITableViewController, AddTaskDelegate,  ChangeButtonDelegate 
 //            self.tableView.reloadData()
 //        }
     }
+    
+    
+
 
     func taskAdded(name: String) {
         networking.taskAddedPOST(name: name) { [weak self] in
@@ -78,37 +82,12 @@ class TodoListVC: UITableViewController, AddTaskDelegate,  ChangeButtonDelegate 
     }
     
     
-//    func changeButton(checked: Bool, index: Int?) {
-//        tasksTodo[index!].completed = checked
-//        networking.taskUpdatePUT(id: index!,completed: checked) { [weak self] in
-//            self?.tasksTodo = (self?.networking.tasksTodoArray)!
-//            self?.reloadList()
-//            self?.navigationController?.popViewController(animated: true)
-//            print("task edited vc")
-//            print("test: reloaded view")
-//        tableView.reloadData()
-//        viewDidLoad()
-//    }
-//}
-    
-//    func changeButton(index: Int?) {
-//        var tempTask = tasksTodo[index!]
-//        networking.taskUpdatePUT(id: tempTask.id, name: tempTask.title, completed: !tempTask.completed) { [weak self] in
-//            self?.tasksTodo = (self?.networking.tasksTodoArray)!
-//            self?.reloadList()
-//            self?.navigationController?.popViewController(animated: true)
-//            print("task updated (VC)")
-//            print("test: reloaded view")
-//
-//        }
-//    }
-    
     func changeButton(_ cell: TaskCell) {
         if let indexPa = tableView.indexPath(for: cell) {
             let tempTask = tasksTodo[indexPa.row]
             networking.taskUpdatePUT(id: tempTask.id, name: tempTask.title, completed: !tempTask.completed) { [weak self] in
-                self?.tasksTodo = (self?.networking.tasksTodoArray)!
                 self?.reloadList()
+                self?.tasksTodo = (self?.networking.tasksTodoArray)!
                 self?.navigationController?.popViewController(animated: true)
                 print("task updated (VC)")
                 print("test: reloaded view")
