@@ -38,8 +38,19 @@
                                                 <action selector="checkBoxAction:" destination="fVD-eP-xv6" eventType="touchUpInside" id="zw7-Zg-ZiZ"/>
                                             </connections>
                                         </button>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K30-pf-CQB">
+                                            <rect key="frame" x="335" y="3" width="30" height="33"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <state key="normal" title="ⓧ">
+                                                <color key="titleColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="deleteButtonAction:" destination="fVD-eP-xv6" eventType="touchUpInside" id="MLz-zK-qZs"/>
+                                            </connections>
+                                        </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i6k-eB-l7T">
-                                            <rect key="frame" x="48" y="6" width="311" height="23"/>
+                                            <rect key="frame" x="48" y="6" width="265" height="23"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
@@ -49,6 +60,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="checkBoxOutlet" destination="oar-MI-yAI" id="Xb3-6E-2X1"/>
+                                    <outlet property="deleteOutlet" destination="K30-pf-CQB" id="Mfc-sH-mBL"/>
                                     <outlet property="taskCellRow" destination="66T-2X-gz0" id="tFK-f1-M5z"/>
                                     <outlet property="taskNameLabel" destination="i6k-eB-l7T" id="uQr-jw-FsR"/>
                                 </connections>
@@ -72,7 +84,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="l3u-uZ-4iN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1895.2" y="386.35682158920542"/>
+            <point key="canvasLocation" x="1895.2" y="385.71428571428572"/>
         </scene>
         <!--Add Task Controller-->
         <scene sceneID="bN5-IU-3y9">

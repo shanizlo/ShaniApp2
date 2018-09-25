@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TodoListVC: UITableViewController, AddTaskDelegate,  ChangeButtonDelegate {
+class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
     
     let networking = Networking()
 //    var tasksTodo: [TaskTodo] = []
@@ -42,15 +42,9 @@ class TodoListVC: UITableViewController, AddTaskDelegate,  ChangeButtonDelegate 
         } else {
             cell.checkBoxOutlet.setTitle("", for: UIControlState.normal)
         }
-        
-        cell.changeButtonDelegate = self
+
+        cell.taskCellDelegate = self
         cell.indexP = indexPath.row
-        
-//        cell.delegate = self
-//        cell.indexP = indexPath.row
-//        cell.tasksArr = tasksTodo
-//
-        
         return cell
     }
     
@@ -61,9 +55,6 @@ class TodoListVC: UITableViewController, AddTaskDelegate,  ChangeButtonDelegate 
             self.tableView.reloadData()
         }
     }
-    
-    
-
 
     func taskAdded(name: String) {
         networking.taskAddedPOST(name: name) { [weak self] in
@@ -89,6 +80,18 @@ class TodoListVC: UITableViewController, AddTaskDelegate,  ChangeButtonDelegate 
             }
         }
     
+    func deleteTaskButton(_ cell: TaskCell) {
+        if let indexPa = tableView.indexPath(for: cell) {
+            let tempTask = tasksTodo[indexPa.row]
+            networking.taskDELETE(id: tempTask.id) { [weak self] in
+                self?.reloadList()
+                self?.tasksTodo = (self?.networking.tasksTodoArray)!
+                self?.navigationController?.popViewController(animated: true)
+                print("task deleted (VC)")
+                print("test: reloaded view")
+            }
+        }
+    }
 
 
 //struct TaskTodo: Codable {
