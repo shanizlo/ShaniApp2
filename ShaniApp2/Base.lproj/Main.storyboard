@@ -62,7 +62,7 @@
                     <navigationItem key="navigationItem" id="ZVg-Zi-4rJ">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="dFl-72-oZH">
                             <connections>
-                                <segue destination="b1l-oq-WpA" kind="show" identifier="addTaskSegue" id="4eM-Le-z3r"/>
+                                <segue destination="b1l-oq-WpA" kind="show" id="4eM-Le-z3r"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

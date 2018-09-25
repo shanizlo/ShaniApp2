@@ -55,17 +55,11 @@ class TodoListVC: UITableViewController, AddTaskDelegate,  ChangeButtonDelegate 
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        print(segue.identifier)
         let addTaskController = segue.destination as! AddTaskController
         addTaskController.addTaskDelegate = self
         addTaskController.postNewTaskCompletion = {
             self.tableView.reloadData()
         }
-//        let taskCellController = segue.destination as! TaskCell
-//        taskCellController.changeButtonDelegate = self
-//        taskCellController.changeButtonCompletion = {
-//            self.tableView.reloadData()
-//        }
     }
     
     
