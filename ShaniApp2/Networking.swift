@@ -29,7 +29,7 @@ class Networking {
             
             do {
                 self?.tasksTodoArray = try JSONDecoder().decode([TaskTodo].self, from: jsonData)
-                self?.tasksTodoArray.sort { $0.id < $1.id }
+                self?.tasksTodoArray.sort { $0.completed && !$1.completed }
                 print(self?.tasksTodoArray ?? "")
             } catch {
                 print(error.localizedDescription)
