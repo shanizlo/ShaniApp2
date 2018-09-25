@@ -10,6 +10,7 @@ import UIKit
 
 protocol AddTaskDelegate: class {
     func taskAdded(name: String)
+    func backToTableView()
 }
 
 class AddTaskController: UIViewController {
@@ -17,6 +18,10 @@ class AddTaskController: UIViewController {
     weak var addTaskDelegate: AddTaskDelegate?
     var postNewTaskCompletion: (() -> Void)?
     @IBOutlet weak var taskNameOutlet: UITextField!
+    
+    @IBAction func cancelAction(_ sender: Any) {
+        addTaskDelegate?.backToTableView()
+    }
     
     @IBAction func addAction(_ sender: Any) {
         if taskNameOutlet.text != "" {

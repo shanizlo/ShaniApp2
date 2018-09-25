@@ -56,6 +56,10 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
         }
     }
 
+    func backToTableView() {
+        navigationController?.popViewController(animated: true)
+    }
+    
     func taskAdded(name: String) {
         networking.taskAddedPOST(name: name) { [weak self] in
             self?.tasksTodo = (self?.networking.tasksTodoArray)!
