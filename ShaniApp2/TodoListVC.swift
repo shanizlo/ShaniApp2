@@ -10,8 +10,6 @@ import UIKit
 class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
     
     let networking = Networking()
-//    var tasksTodo: [TaskTodo] = []
-//    var tempID = 1
     var tasksTodo: [Networking.TaskTodo] = []
     
     override func viewDidLoad() {
@@ -19,16 +17,24 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
         networking.loadDataFromCache()
         self.tasksTodo = (self.networking.tasksTodoArray)
         self.tableView.reloadData()
+        print("view loaded from cache")
         networking.getJsonFromUrl(completion: { [weak self] in
            self?.tasksTodo = (self?.networking.tasksTodoArray)!
            self?.tableView.reloadData()
+            print("view reloaded from get")
        })
-        print(tasksTodo)
     }
     
     func reloadList() {
-        viewDidLoad()
+        super.viewDidLoad()
+        networking.getJsonFromUrl(completion: { [weak self] in
+            self?.tasksTodo = (self?.networking.tasksTodoArray)!
+            self?.tableView.reloadData()
+            print("view reloaded from get")
+        })
     }
+    
+    
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tasksTodo.count
@@ -67,8 +73,7 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
             self?.tasksTodo = (self?.networking.tasksTodoArray)!
             self?.reloadList()
             self?.navigationController?.popViewController(animated: true)
-            print("task added (VC)")
-            print("test: reloaded view")
+            print("task added")
         }
     }
     
@@ -80,8 +85,7 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
                 self?.reloadList()
                 self?.tasksTodo = (self?.networking.tasksTodoArray)!
                 self?.navigationController?.popViewController(animated: true)
-                print("task updated (VC)")
-                print("test: reloaded view")
+                print("task updated")
                 }
             }
         }
@@ -93,19 +97,9 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
                 self?.reloadList()
                 self?.tasksTodo = (self?.networking.tasksTodoArray)!
                 self?.navigationController?.popViewController(animated: true)
-                print("task deleted (VC)")
-                print("test: reloaded view")
+                print("task deleted")
             }
         }
     }
     
-    
-    
-
-
-//struct TaskTodo: Codable {
-//    var id = 0
-//    var title = ""
-//    var completed = false
-//}
 }

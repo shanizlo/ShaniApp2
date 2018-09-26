@@ -37,5 +37,4 @@ class TaskCell: UITableViewCell {
     }
     
     var indexP: Int?
-//    var tasksArr: [TaskTodo]?
 }

@@ -11,8 +11,8 @@ class Networking {
     
     let urlGet = "http://ec2-52-32-105-2.us-west-2.compute.amazonaws.com:8080/all"
     let urlPost = "http://ec2-52-32-105-2.us-west-2.compute.amazonaws.com:8080/new"
-    let urlPut = "http://ec2-52-32-105-2.us-west-2.compute.amazonaws.com:8080/update/"
-    let urlDelete = "http://ec2-52-32-105-2.us-west-2.compute.amazonaws.com:8080/delete/"
+    let urlPut = "http://ec2-52-32-105-2.us-west-2.compute.amazonaws.com:8080/update/" //append id of task
+    let urlDelete = "http://ec2-52-32-105-2.us-west-2.compute.amazonaws.com:8080/delete/" //append id of task
     
     let caching = Caching()
     
@@ -22,15 +22,15 @@ class Networking {
     
     let session = URLSession.shared
     
-    func loadDataFromCache() {
+    func loadDataFromCache() { //put it here because it needs struct TaskTodo from Networking class to decode
         do {
             tasksTodoArray = try JSONDecoder().decode([TaskTodo].self, from: caching.pullFromCache()!)
-            
             self.tasksTodoArray.sort { $0.completed && !$1.completed }
         } catch {
             print(error.localizedDescription)
         }
     }
+    
     
     func getJsonFromUrl(completion: @escaping () -> Void) {
         
@@ -38,29 +38,21 @@ class Networking {
         
         session.dataTask(with: url) { [weak self] (data, response, error) in
             guard let jsonData = data else { return }
-            
             do {
                 self?.tasksTodoArray = try JSONDecoder().decode([TaskTodo].self, from: jsonData)
                 self?.tasksTodoArray.sort { $0.completed && !$1.completed }
                 print("got data from url")
-                print(self?.tasksTodoArray ?? "")
             } catch {
                 print(error.localizedDescription)
             }
-            
-            
             self?.caching.saveToCache(data: jsonData)
-            
-            
-            
+
             DispatchQueue.main.async {
                 completion()
             }
         }.resume()
     }
   
-    
-    
     
     func taskAddedPOST(name:String, completion: @escaping () -> Void) {
         let parametersJson: [String : Any] = ["id":tempID, "title":name, "completed":false]
@@ -75,7 +67,6 @@ class Networking {
             if let response = response {
                 print(response)
             }
-            
             if let data = data {
                 print(data)
                 do {
