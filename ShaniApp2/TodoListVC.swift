@@ -16,11 +16,13 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        networking.loadDataFromCache()
+        self.tasksTodo = (self.networking.tasksTodoArray)
+        self.tableView.reloadData()
         networking.getJsonFromUrl(completion: { [weak self] in
-            self?.tasksTodo = (self?.networking.tasksTodoArray)!
-            self?.tableView.reloadData()
-            print("test: reloaded view")
-        })
+           self?.tasksTodo = (self?.networking.tasksTodoArray)!
+           self?.tableView.reloadData()
+       })
         print(tasksTodo)
     }
     
@@ -96,6 +98,9 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
             }
         }
     }
+    
+    
+    
 
 
 //struct TaskTodo: Codable {
