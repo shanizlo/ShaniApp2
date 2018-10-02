@@ -62,24 +62,8 @@ class Networking {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.httpBody = jsonDataToPost
-        
-        session.dataTask(with: request) { [weak self] (data, response, error) in
-            if let response = response {
-                print(response)
-            }
-            if let data = data {
-                print(data)
-                do {
-                    let json = try JSONSerialization.jsonObject(with: data, options: [])
-                    print(json)
-                } catch {
-                    print(error)
-                }
-                DispatchQueue.main.async {
-                    completion()
-                }
-            }
-        }.resume()
+
+        perform(request: request, completion: completion)
     }
     
     
@@ -94,23 +78,7 @@ class Networking {
         request.httpMethod = "PUT"
         request.httpBody = jsonDataToPut
         
-        session.dataTask(with: request) { [weak self] (data, response, error) in
-            if let response = response {
-                print(response)
-            }
-            if let data = data {
-                print(data)
-                do {
-                    let json = try JSONSerialization.jsonObject(with: data, options: [])
-                    print(json)
-                } catch {
-                    print(error)
-                }
-                DispatchQueue.main.async {
-                    completion()
-                }
-            }
-        }.resume()
+        perform(request: request, completion: completion)
     }
     
     
@@ -122,7 +90,12 @@ class Networking {
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
         
-        session.dataTask(with: request) { [weak self] (data, response, error) in
+        perform(request: request, completion: completion)
+    }
+    
+    
+    func perform(request: URLRequest, completion: @escaping () -> Void) {
+        session.dataTask(with: request) {(data, response, error) in
             if let response = response {
                 print(response)
             }
