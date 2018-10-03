@@ -26,7 +26,7 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
     }
     
     func reloadList() {
-        super.viewDidLoad()
+//        super.viewDidLoad()
         networking.getJsonFromUrl(completion: { [weak self] in
             self?.tasksTodo = (self?.networking.tasksTodoArray)!
             self?.tableView.reloadData()

@@ -9,11 +9,24 @@ import Foundation
 
 class Networking {
     
-    let urlGet = "http://ec2-52-32-105-2.us-west-2.compute.amazonaws.com:8080/all"
-    let urlPost = "http://ec2-52-32-105-2.us-west-2.compute.amazonaws.com:8080/new"
-    let urlPut = "http://ec2-52-32-105-2.us-west-2.compute.amazonaws.com:8080/update/" //append id of task
-    let urlDelete = "http://ec2-52-32-105-2.us-west-2.compute.amazonaws.com:8080/delete/" //append id of task
-    
+    enum URLMethods: String {
+        case all
+        case new
+        case update
+        case delete
+        
+        static var baseURL = "http://ec2-52-32-105-2.us-west-2.compute.amazonaws.com:8080/"
+        
+        var urlString : String {
+            return "\(URLMethods.baseURL)/\(rawValue)"
+        }
+        
+        func getUrlFor(id: Int) -> String {
+            return "\(urlString)/\(id)"
+        }
+        
+    }
+
     let caching = Caching()
     
     var tasksTodoArray: [TaskTodo] = []
@@ -34,10 +47,12 @@ class Networking {
     
     func getJsonFromUrl(completion: @escaping () -> Void) {
         
-        guard let url = URL(string: urlGet) else { return }
-        
+        guard let url = URL(string: URLMethods.all.urlString) else { return }
+
         session.dataTask(with: url) { [weak self] (data, response, error) in
+        
             guard let jsonData = data else { return }
+        
             do {
                 self?.tasksTodoArray = try JSONDecoder().decode([TaskTodo].self, from: jsonData)
                 self?.tasksTodoArray.sort { $0.completed && !$1.completed }
@@ -55,10 +70,9 @@ class Networking {
   
     
     func taskAddedPOST(name:String, completion: @escaping () -> Void) {
-        let parametersJson: [String : Any] = ["id":tempID, "title":name, "completed":false]
-        let jsonDataToPost = try? JSONSerialization.data(withJSONObject: parametersJson)
+        let jsonDataToPost = getJsonParameters(id: tempID, name: name)
         
-        guard let url = URL(string: urlPost) else { return }
+        guard let url = URL(string: URLMethods.new.urlString) else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.httpBody = jsonDataToPost
@@ -68,10 +82,8 @@ class Networking {
     
     
     func taskUpdatePUT(id: Int, name: String, completed: Bool, completion: @escaping () -> Void) {
-        
-        let parametersJson: [String : Any] = ["id":id, "title": name, "completed":completed]
-        let jsonDataToPut = try? JSONSerialization.data(withJSONObject: parametersJson)
-        let urlString = urlPut + String(id)
+        let jsonDataToPut = getJsonParameters(id: id, name: name, completed: completed)
+        let urlString = URLMethods.update.getUrlFor(id: id)
         guard let url = URL(string: urlString) else { return }
         
         var request = URLRequest(url: url)
@@ -81,11 +93,14 @@ class Networking {
         perform(request: request, completion: completion)
     }
     
+    func getJsonParameters(id: Int, name: String, completed: Bool = false) ->  Data? {
+        let parametersJson: [String: Any] = ["id": id, "title": name, "completed": completed]
+        return try? JSONSerialization.data(withJSONObject: parametersJson)
+    }
     
     func taskDELETE(id: Int, completion: @escaping () -> Void) {
         
-        let urlString = urlDelete + String(id)
-        guard let url = URL(string: urlString) else { return }
+        guard let url = URL(string: URLMethods.delete.getUrlFor(id: id)) else { return }
         
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
