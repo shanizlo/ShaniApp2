@@ -10,7 +10,7 @@ import UIKit
 class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
     
     let networking = Networking()
-    var tasksTodo: [Networking.TaskTodo] = []
+    var tasksTodo: [TaskModeling.TaskTodo] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()

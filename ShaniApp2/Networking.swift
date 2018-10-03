@@ -26,10 +26,13 @@ class Networking {
         }
         
     }
+    
 
     let caching = Caching()
+    let taskModeling = TaskModeling()
     
-    var tasksTodoArray: [TaskTodo] = []
+    var tasksTodoArray: [TaskModeling.TaskTodo] = []
+    
     var tempID = 1
     var indexT = 0
     
@@ -37,7 +40,7 @@ class Networking {
     
     func loadDataFromCache() { //put it here because it needs struct TaskTodo from Networking class to decode
         do {
-            tasksTodoArray = try JSONDecoder().decode([TaskTodo].self, from: caching.pullFromCache()!)
+            tasksTodoArray = try JSONDecoder().decode([TaskModeling.TaskTodo].self, from: caching.pullFromCache()!)
             self.tasksTodoArray.sort { $0.completed && !$1.completed }
         } catch {
             print(error.localizedDescription)
@@ -54,7 +57,7 @@ class Networking {
             guard let jsonData = data else { return }
         
             do {
-                self?.tasksTodoArray = try JSONDecoder().decode([TaskTodo].self, from: jsonData)
+                self?.tasksTodoArray = try JSONDecoder().decode([TaskModeling.TaskTodo].self, from: jsonData)
                 self?.tasksTodoArray.sort { $0.completed && !$1.completed }
                 print("got data from url")
             } catch {
@@ -73,6 +76,7 @@ class Networking {
         let jsonDataToPost = getJsonParameters(id: tempID, name: name)
         
         guard let url = URL(string: URLMethods.new.urlString) else { return }
+        
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.httpBody = jsonDataToPost
@@ -93,10 +97,12 @@ class Networking {
         perform(request: request, completion: completion)
     }
     
+    
     func getJsonParameters(id: Int, name: String, completed: Bool = false) ->  Data? {
         let parametersJson: [String: Any] = ["id": id, "title": name, "completed": completed]
         return try? JSONSerialization.data(withJSONObject: parametersJson)
     }
+    
     
     func taskDELETE(id: Int, completion: @escaping () -> Void) {
         
@@ -128,12 +134,5 @@ class Networking {
             }
         }.resume()
     }
-    
-    
-    struct TaskTodo: Codable {
-        var id = 0
-        var title = ""
-        var completed = false
-    }
-    
+
 }
