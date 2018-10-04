@@ -10,25 +10,24 @@ import UIKit
 class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
     
     let networking = Networking()
-    var tasksTodo: [TaskModeling.TaskTodo] = []
+    let taskModeling = TaskModeling()
+    var tasksTodoLocal: [TaskModeling.TaskTodo] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        networking.loadDataFromCache()
-        self.tasksTodo = (self.networking.tasksTodoArray)
+        tasksTodoLocal = networking.loadDataFromCacheToArray()
         self.tableView.reloadData()
         print("view loaded from cache")
         networking.getJsonFromUrl(completion: { [weak self] in
-           self?.tasksTodo = (self?.networking.tasksTodoArray)!
+           self?.tasksTodoLocal = (self?.networking.tasksTodoArrayNetworking)!
            self?.tableView.reloadData()
             print("view reloaded from get")
        })
     }
     
     func reloadList() {
-//        super.viewDidLoad()
         networking.getJsonFromUrl(completion: { [weak self] in
-            self?.tasksTodo = (self?.networking.tasksTodoArray)!
+            self?.tasksTodoLocal = (self?.networking.tasksTodoArrayNetworking)!
             self?.tableView.reloadData()
             print("view reloaded from get")
         })
@@ -37,15 +36,15 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
     
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tasksTodo.count
+        return tasksTodoLocal.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell" , for: indexPath) as! TaskCell
         
-        cell.taskNameLabel.text = tasksTodo[indexPath.item].title
+        cell.taskNameLabel.text = tasksTodoLocal[indexPath.item].title
 
-        if tasksTodo[indexPath.row].completed {
+        if tasksTodoLocal[indexPath.row].completed {
             cell.checkBoxOutlet.setTitle("✓", for: UIControlState.normal)
         } else {
             cell.checkBoxOutlet.setTitle("", for: UIControlState.normal)
@@ -70,7 +69,7 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
     
     func taskAdded(name: String) {
         networking.taskAddedPOST(name: name) { [weak self] in
-            self?.tasksTodo = (self?.networking.tasksTodoArray)!
+            self?.tasksTodoLocal = (self?.networking.tasksTodoArrayNetworking)!
             self?.reloadList()
             self?.navigationController?.popViewController(animated: true)
             print("task added")
@@ -80,10 +79,10 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
     
     func changeButton(_ cell: TaskCell) {
         if let indexPa = tableView.indexPath(for: cell) {
-            let tempTask = tasksTodo[indexPa.row]
+            let tempTask = tasksTodoLocal[indexPa.row]
             networking.taskUpdatePUT(id: tempTask.id, name: tempTask.title, completed: !tempTask.completed) { [weak self] in
                 self?.reloadList()
-                self?.tasksTodo = (self?.networking.tasksTodoArray)!
+                self?.tasksTodoLocal = (self?.networking.tasksTodoArrayNetworking)!
                 self?.navigationController?.popViewController(animated: true)
                 print("task updated")
                 }
@@ -92,10 +91,10 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
     
     func deleteTaskButton(_ cell: TaskCell) {
         if let indexPa = tableView.indexPath(for: cell) {
-            let tempTask = tasksTodo[indexPa.row]
+            let tempTask = tasksTodoLocal[indexPa.row]
             networking.taskDELETE(id: tempTask.id) { [weak self] in
                 self?.reloadList()
-                self?.tasksTodo = (self?.networking.tasksTodoArray)!
+                self?.tasksTodoLocal = (self?.networking.tasksTodoArrayNetworking)!
                 self?.navigationController?.popViewController(animated: true)
                 print("task deleted")
             }

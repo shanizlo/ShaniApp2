@@ -18,51 +18,48 @@ class Networking {
         static var baseURL = "http://ec2-52-32-105-2.us-west-2.compute.amazonaws.com:8080/"
         
         var urlString : String {
-            return "\(URLMethods.baseURL)/\(rawValue)"
+                return "\(URLMethods.baseURL)/\(rawValue)"
         }
         
-        func getUrlFor(id: Int) -> String {
-            return "\(urlString)/\(id)"
+        func getUrlFor(id: Int) -> URL? { //Not sure if this is right to do - I want this to return URL not string
+            if let url = URL(string: "\(urlString)/\(id)") {
+                return url
+            } else { return nil }
         }
         
+        func getUrl() -> URL? {
+            if let url = URL(string: urlString) {
+                return url
+            } else { return nil }
+        }
     }
     
 
     let caching = Caching()
     let taskModeling = TaskModeling()
     
-    var tasksTodoArray: [TaskModeling.TaskTodo] = []
+    var tasksTodoArrayNetworking: [TaskModeling.TaskTodo] = []
     
     var tempID = 1
     var indexT = 0
     
     let session = URLSession.shared
     
-    func loadDataFromCache() { //put it here because it needs struct TaskTodo from Networking class to decode
-        do {
-            tasksTodoArray = try JSONDecoder().decode([TaskModeling.TaskTodo].self, from: caching.pullFromCache()!)
-            self.tasksTodoArray.sort { $0.completed && !$1.completed }
-        } catch {
-            print(error.localizedDescription)
-        }
+    func loadDataFromCacheToArray() -> [TaskModeling.TaskTodo] {
+        return taskModeling.jsonToArrayOfTasksSorted(json: caching.pullFromCache()!)
     }
     
     
     func getJsonFromUrl(completion: @escaping () -> Void) {
-        
-        guard let url = URL(string: URLMethods.all.urlString) else { return }
 
-        session.dataTask(with: url) { [weak self] (data, response, error) in
-        
+        let url = URLMethods.all.getUrl()
+
+        session.dataTask(with: url!) { [weak self] (data, response, error) in
+
             guard let jsonData = data else { return }
-        
-            do {
-                self?.tasksTodoArray = try JSONDecoder().decode([TaskModeling.TaskTodo].self, from: jsonData)
-                self?.tasksTodoArray.sort { $0.completed && !$1.completed }
-                print("got data from url")
-            } catch {
-                print(error.localizedDescription)
-            }
+
+            self?.tasksTodoArrayNetworking = (self?.taskModeling.jsonToArrayOfTasksSorted(json: jsonData))!
+
             self?.caching.saveToCache(data: jsonData)
 
             DispatchQueue.main.async {
@@ -70,29 +67,41 @@ class Networking {
             }
         }.resume()
     }
-  
+    
     
     func taskAddedPOST(name:String, completion: @escaping () -> Void) {
         let jsonDataToPost = getJsonParameters(id: tempID, name: name)
+
+        let url = URLMethods.new.getUrl()
         
-        guard let url = URL(string: URLMethods.new.urlString) else { return }
-        
-        var request = URLRequest(url: url)
+        var request = URLRequest(url: url!)
         request.httpMethod = "POST"
         request.httpBody = jsonDataToPost
 
         perform(request: request, completion: completion)
     }
-    
+
     
     func taskUpdatePUT(id: Int, name: String, completed: Bool, completion: @escaping () -> Void) {
+       
         let jsonDataToPut = getJsonParameters(id: id, name: name, completed: completed)
-        let urlString = URLMethods.update.getUrlFor(id: id)
-        guard let url = URL(string: urlString) else { return }
         
-        var request = URLRequest(url: url)
+        let url = URLMethods.update.getUrlFor(id: id)
+        
+        var request = URLRequest(url: url!)
         request.httpMethod = "PUT"
         request.httpBody = jsonDataToPut
+        
+        perform(request: request, completion: completion)
+    }
+    
+    
+    func taskDELETE(id: Int, completion: @escaping () -> Void) {
+        
+        let url = URLMethods.delete.getUrlFor(id: id)
+        
+        var request = URLRequest(url: url!)
+        request.httpMethod = "DELETE"
         
         perform(request: request, completion: completion)
     }
@@ -101,17 +110,6 @@ class Networking {
     func getJsonParameters(id: Int, name: String, completed: Bool = false) ->  Data? {
         let parametersJson: [String: Any] = ["id": id, "title": name, "completed": completed]
         return try? JSONSerialization.data(withJSONObject: parametersJson)
-    }
-    
-    
-    func taskDELETE(id: Int, completion: @escaping () -> Void) {
-        
-        guard let url = URL(string: URLMethods.delete.getUrlFor(id: id)) else { return }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "DELETE"
-        
-        perform(request: request, completion: completion)
     }
     
     
