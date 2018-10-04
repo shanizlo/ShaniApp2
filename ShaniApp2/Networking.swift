@@ -37,9 +37,7 @@ class Networking {
 
     let caching = Caching()
     let taskModeling = TaskModeling()
-    
-    var tasksTodoArrayNetworking: [TaskModeling.TaskTodo] = []
-    
+
     var tempID = 1
     var indexT = 0
     
@@ -50,7 +48,7 @@ class Networking {
     }
     
     
-    func getJsonFromUrl(completion: @escaping () -> Void) {
+    func getJsonFromUrl(completion: @escaping (_ tasks: [TaskModeling.TaskTodo]) -> Void) {
 
         let url = URLMethods.all.getUrl()
 
@@ -58,18 +56,19 @@ class Networking {
 
             guard let jsonData = data else { return }
 
-            self?.tasksTodoArrayNetworking = (self?.taskModeling.jsonToArrayOfTasksSorted(json: jsonData))!
+            let tasks = (self?.taskModeling.jsonToArrayOfTasksSorted(json: jsonData))!
 
             self?.caching.saveToCache(data: jsonData)
 
             DispatchQueue.main.async {
-                completion()
+                completion(tasks)
             }
         }.resume()
     }
     
     
     func taskAddedPOST(name:String, completion: @escaping () -> Void) {
+        
         let jsonDataToPost = getJsonParameters(id: tempID, name: name)
 
         let url = URLMethods.new.getUrl()
@@ -77,7 +76,7 @@ class Networking {
         var request = URLRequest(url: url!)
         request.httpMethod = "POST"
         request.httpBody = jsonDataToPost
-
+        
         perform(request: request, completion: completion)
     }
 

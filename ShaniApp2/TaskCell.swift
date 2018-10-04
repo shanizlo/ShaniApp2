@@ -8,8 +8,8 @@
 import UIKit
 
 protocol TaskCellDelegate: class {
-    func changeButton(_ cell: TaskCell)
-    func deleteTaskButton(_ cell: TaskCell)
+    func changeCompletedButtonTap(_ cell: TaskCell)
+    func deleteTaskButtonTap(_ cell: TaskCell)
 }
 
 class TaskCell: UITableViewCell {
@@ -29,11 +29,11 @@ class TaskCell: UITableViewCell {
     @IBOutlet weak var taskCellRow: UIView!
     
     @IBAction func checkBoxAction(_ sender: Any) {
-        taskCellDelegate?.changeButton(self)
+        taskCellDelegate?.changeCompletedButtonTap(self)
     }
     
     @IBAction func deleteButtonAction(_ sender: Any) {
-        taskCellDelegate?.deleteTaskButton(self)
+        taskCellDelegate?.deleteTaskButtonTap(self)
     }
     
     var indexP: Int?

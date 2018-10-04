@@ -18,21 +18,20 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
         tasksTodoLocal = networking.loadDataFromCacheToArray()
         self.tableView.reloadData()
         print("view loaded from cache")
-        networking.getJsonFromUrl(completion: { [weak self] in
-           self?.tasksTodoLocal = (self?.networking.tasksTodoArrayNetworking)!
+        networking.getJsonFromUrl(completion: { [weak self] tasks in
+           self?.tasksTodoLocal = tasks
            self?.tableView.reloadData()
             print("view reloaded from get")
        })
     }
     
-    func reloadList() {
-        networking.getJsonFromUrl(completion: { [weak self] in
-            self?.tasksTodoLocal = (self?.networking.tasksTodoArrayNetworking)!
+    func reloadUpdateList() {
+        networking.getJsonFromUrl(completion: { [weak self] tasks in
+            self?.tasksTodoLocal = tasks
             self?.tableView.reloadData()
             print("view reloaded from get")
         })
     }
-    
     
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -67,34 +66,51 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
         navigationController?.popViewController(animated: true)
     }
     
-    func taskAdded(name: String) {
+    func taskAddTap(name: String) {
+        tasksTodoLocal.append(TaskModeling.TaskTodo(id: 1, title: name, completed: false)) //some temp task because id will be known only after POST
+        print("added temp task to local")
+        print(tasksTodoLocal)
+        self.tableView.reloadData()
+        self.navigationController?.popViewController(animated: true)
         networking.taskAddedPOST(name: name) { [weak self] in
-            self?.tasksTodoLocal = (self?.networking.tasksTodoArrayNetworking)!
-            self?.reloadList()
-            self?.navigationController?.popViewController(animated: true)
+            self?.tasksTodoLocal = (self?.networking.loadDataFromCacheToArray())!
+            self?.reloadUpdateList()
+//            self?.navigationController?.popViewController(animated: true)
             print("task added")
         }
     }
     
     
-    func changeButton(_ cell: TaskCell) {
-        if let indexPa = tableView.indexPath(for: cell) {
-            let tempTask = tasksTodoLocal[indexPa.row]
+    func changeCompletedButtonTap(_ cell: TaskCell) {
+        
+        if let indexPathForCell = tableView.indexPath(for: cell) {
+            
+            let tempTask = tasksTodoLocal[indexPathForCell.row]
+            
+            tasksTodoLocal[indexPathForCell.row].completed = !tempTask.completed
+            self.tableView.reloadData()
+            print("task updated locally")
+            
             networking.taskUpdatePUT(id: tempTask.id, name: tempTask.title, completed: !tempTask.completed) { [weak self] in
-                self?.reloadList()
-                self?.tasksTodoLocal = (self?.networking.tasksTodoArrayNetworking)!
+                self?.reloadUpdateList()
                 self?.navigationController?.popViewController(animated: true)
                 print("task updated")
                 }
             }
         }
     
-    func deleteTaskButton(_ cell: TaskCell) {
-        if let indexPa = tableView.indexPath(for: cell) {
-            let tempTask = tasksTodoLocal[indexPa.row]
+    func deleteTaskButtonTap(_ cell: TaskCell) {
+        
+        if let indexPathForCell = tableView.indexPath(for: cell) {
+            
+            let tempTask = tasksTodoLocal[indexPathForCell.row]
+            
+            tasksTodoLocal.remove(at: indexPathForCell.row)
+            self.tableView.reloadData()
+            print("task removed locally")
+            
             networking.taskDELETE(id: tempTask.id) { [weak self] in
-                self?.reloadList()
-                self?.tasksTodoLocal = (self?.networking.tasksTodoArrayNetworking)!
+                self?.reloadUpdateList()
                 self?.navigationController?.popViewController(animated: true)
                 print("task deleted")
             }
