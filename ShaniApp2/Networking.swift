@@ -43,7 +43,7 @@ class Networking {
     
     let session = URLSession.shared
     
-    func loadDataFromCacheToArray() -> [TaskModeling.TaskTodo] {
+    func loadDataFromCacheToArray() -> [TaskModeling.TaskTodo] {        
         return taskModeling.jsonToArrayOfTasksSorted(json: caching.pullFromCache()!)
     }
     

@@ -23,6 +23,15 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
            self?.tableView.reloadData()
             print("view reloaded from get")
        })
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(pullRefresh), for: UIControlEvents.valueChanged)
+        self.refreshControl = refreshControl
+    }
+    
+    @objc func pullRefresh() {
+        reloadUpdateList()
+        refreshControl?.endRefreshing()
     }
     
     func reloadUpdateList() {
@@ -32,6 +41,7 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
             print("view reloaded from get")
         })
     }
+    
     
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -90,6 +100,7 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
             let tempTask = tasksTodoLocal[indexPathForCell.row]
             
             tasksTodoLocal[indexPathForCell.row].completed = !tempTask.completed
+            tasksTodoLocal.sort { $0.completed && !$1.completed }
             self.tableView.reloadData()
             print("task updated locally")
             
