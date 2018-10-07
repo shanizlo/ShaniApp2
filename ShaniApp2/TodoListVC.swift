@@ -16,32 +16,28 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         tasksTodoLocal = networking.loadDataFromCacheToArray()
-        self.tableView.reloadData()
         print("view loaded from cache")
-        networking.getJsonFromUrl(completion: { [weak self] tasks in
-           self?.tasksTodoLocal = tasks
-           self?.tableView.reloadData()
-            print("view reloaded from get")
-       })
+        reloadUpdateList()
         
+        //ToReview: pull to refresh added
         let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(pullRefresh), for: UIControlEvents.valueChanged)
+        refreshControl.addTarget(self, action: #selector(pullToRefresh), for: UIControlEvents.valueChanged)
         self.refreshControl = refreshControl
     }
     
-    @objc func pullRefresh() {
+    @objc func pullToRefresh() {
         reloadUpdateList()
         refreshControl?.endRefreshing()
     }
     
     func reloadUpdateList() {
-        networking.getJsonFromUrl(completion: { [weak self] tasks in
+        networking.getTasksGET(completion: { [weak self] tasks in
             self?.tasksTodoLocal = tasks
             self?.tableView.reloadData()
             print("view reloaded from get")
+            self?.navigationController?.popViewController(animated: true)
         })
     }
-    
     
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -49,16 +45,14 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell" , for: indexPath) as! TaskCell
+        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell" , for: indexPath) as? TaskCell else { return UITableViewCell() }
         
         cell.taskNameLabel.text = tasksTodoLocal[indexPath.item].title
-
-        if tasksTodoLocal[indexPath.row].completed {
-            cell.checkBoxOutlet.setTitle("✓", for: UIControlState.normal)
-        } else {
-            cell.checkBoxOutlet.setTitle("", for: UIControlState.normal)
-        }
-
+        
+        let cellTitle = tasksTodoLocal[indexPath.row].completed ? "✓" : ""
+        cell.checkBoxOutlet.setTitle(cellTitle, for: UIControlState.normal)
+        
         cell.taskCellDelegate = self
         cell.indexP = indexPath.row
         return cell
@@ -66,10 +60,11 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let addTaskController = segue.destination as! AddTaskController
+        
+        guard let addTaskController = segue.destination as? AddTaskController else { return }
         addTaskController.addTaskDelegate = self
-        addTaskController.postNewTaskCompletion = {
-            self.tableView.reloadData()
+        addTaskController.postNewTaskCompletion = { [weak self] in
+            self?.tableView.reloadData()
         }
     }
 
@@ -86,7 +81,11 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
         self.tableView.reloadData()
         self.navigationController?.popViewController(animated: true)
         networking.taskAddedPOST(name: name) { [weak self] in
+            
+//            guard self?.tasksTodoLocal = self?.networking.loadDataFromCacheToArray() as? [TaskModeling.TaskTodo] else { return }
+            
             self?.tasksTodoLocal = (self?.networking.loadDataFromCacheToArray())!
+            
             self?.reloadUpdateList()
             print("task added")
         }
@@ -101,12 +100,11 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
             
             tasksTodoLocal[indexPathForCell.row].completed = !tempTask.completed
             tasksTodoLocal.sort { $0.completed && !$1.completed }
-            self.tableView.reloadData()
+            tableView.reloadData()
             print("task updated locally")
             
-            networking.taskUpdatePUT(id: tempTask.id, name: tempTask.title, completed: !tempTask.completed) { [weak self] in
+            networking.taskUpdatePUT(task: tempTask) { [weak self] in
                 self?.reloadUpdateList()
-                self?.navigationController?.popViewController(animated: true)
                 print("task updated")
                 }
             }
@@ -117,15 +115,14 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
         
         if let indexPathForCell = tableView.indexPath(for: cell) {
             
-            let tempTask = tasksTodoLocal[indexPathForCell.row]
+            let idToDelete = tasksTodoLocal[indexPathForCell.row].id
             
             tasksTodoLocal.remove(at: indexPathForCell.row)
             self.tableView.reloadData()
             print("task removed locally")
             
-            networking.taskDELETE(id: tempTask.id) { [weak self] in
+            networking.taskDELETE(id: idToDelete) { [weak self] in
                 self?.reloadUpdateList()
-                self?.navigationController?.popViewController(animated: true)
                 print("task deleted")
             }
         }

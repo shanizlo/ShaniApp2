@@ -43,12 +43,13 @@ class Networking {
     
     let session = URLSession.shared
     
-    func loadDataFromCacheToArray() -> [TaskModeling.TaskTodo] {        
-        return taskModeling.jsonToArrayOfTasksSorted(json: caching.pullFromCache()!)
+    func loadDataFromCacheToArray() -> [TaskModeling.TaskTodo] {
+        guard let resultsFromCache = caching.pullFromCache() else { return [TaskModeling.TaskTodo]() }
+        return taskModeling.jsonToArrayOfTasksSorted(json: resultsFromCache)
     }
     
     
-    func getJsonFromUrl(completion: @escaping (_ tasks: [TaskModeling.TaskTodo]) -> Void) {
+    func getTasksGET(completion: @escaping (_ tasks: [TaskModeling.TaskTodo]) -> Void) {
 
         let url = URLMethods.all.getUrl()
 
@@ -85,11 +86,11 @@ class Networking {
     }
 
     
-    func taskUpdatePUT(id: Int, name: String, completed: Bool, completion: @escaping () -> Void) {
+    func taskUpdatePUT(task: TaskModeling.TaskTodo, completion: @escaping () -> Void) {
        
-        let jsonDataToPut = getJsonParameters(id: id, name: name, completed: completed)
+        let jsonDataToPut = getJsonParameters(id: task.id, name: task.title, completed: !task.completed)
         
-        let url = URLMethods.update.getUrlFor(id: id)
+        let url = URLMethods.update.getUrlFor(id: task.id)
         
         var request = URLRequest(url: url!)
         request.httpMethod = "PUT"
