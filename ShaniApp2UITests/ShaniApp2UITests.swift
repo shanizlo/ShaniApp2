@@ -5,6 +5,16 @@
 //  Created by Shani Zlotnik on 27/09/2018.
 //
 
+
+/*
+ tests to do:
+ test add new task:
+    tap add button
+    assert addScreen
+    
+ 
+ */
+
 import XCTest
 
 class ShaniApp2UITests: XCTestCase {

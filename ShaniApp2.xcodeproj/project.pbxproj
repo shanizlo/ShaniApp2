@@ -7,29 +7,57 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C6095307214E864600F80F7A /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6095306214E864600F80F7A /* Networking.swift */; };
+		C623CE1C21650E49007983FB /* TaskModeling.swift in Sources */ = {isa = PBXBuildFile; fileRef = C623CE1B21650E49007983FB /* TaskModeling.swift */; };
 		C67E1195213429F100E4A8D5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67E1194213429F100E4A8D5 /* AppDelegate.swift */; };
-		C67E1197213429F100E4A8D5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67E1196213429F100E4A8D5 /* ViewController.swift */; };
+		C67E1197213429F100E4A8D5 /* TodoListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67E1196213429F100E4A8D5 /* TodoListVC.swift */; };
 		C67E119A213429F100E4A8D5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C67E1198213429F100E4A8D5 /* Main.storyboard */; };
 		C67E119C213429F200E4A8D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C67E119B213429F200E4A8D5 /* Assets.xcassets */; };
 		C67E119F213429F200E4A8D5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C67E119D213429F200E4A8D5 /* LaunchScreen.storyboard */; };
 		C67E11A72134346900E4A8D5 /* TaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67E11A62134346900E4A8D5 /* TaskCell.swift */; };
 		C67E11A9213442E300E4A8D5 /* AddTaskController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67E11A8213442E300E4A8D5 /* AddTaskController.swift */; };
+		C69893E0215BA25900485033 /* Caching.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69893DF215BA25900485033 /* Caching.swift */; };
+		C69893E8215CBED100485033 /* ShaniApp2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69893E7215CBED100485033 /* ShaniApp2UITests.swift */; };
+		C69893EF215CE83700485033 /* TodoListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67E1196213429F100E4A8D5 /* TodoListVC.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		C69893EA215CBED100485033 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C67E1189213429F100E4A8D5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C67E1190213429F100E4A8D5;
+			remoteInfo = ShaniApp2;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		C6095306214E864600F80F7A /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
+		C623CE1B21650E49007983FB /* TaskModeling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskModeling.swift; sourceTree = "<group>"; };
 		C67E1191213429F100E4A8D5 /* ShaniApp2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShaniApp2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C67E1194213429F100E4A8D5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		C67E1196213429F100E4A8D5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		C67E1196213429F100E4A8D5 /* TodoListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListVC.swift; sourceTree = "<group>"; };
 		C67E1199213429F100E4A8D5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C67E119B213429F200E4A8D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C67E119E213429F200E4A8D5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C67E11A0213429F200E4A8D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C67E11A62134346900E4A8D5 /* TaskCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCell.swift; sourceTree = "<group>"; };
 		C67E11A8213442E300E4A8D5 /* AddTaskController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskController.swift; sourceTree = "<group>"; };
+		C69893DF215BA25900485033 /* Caching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Caching.swift; sourceTree = "<group>"; };
+		C69893E5215CBED100485033 /* ShaniApp2UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShaniApp2UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C69893E7215CBED100485033 /* ShaniApp2UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShaniApp2UITests.swift; sourceTree = "<group>"; };
+		C69893E9215CBED100485033 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		C67E118E213429F100E4A8D5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C69893E2215CBED100485033 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -43,6 +71,7 @@
 			isa = PBXGroup;
 			children = (
 				C67E1193213429F100E4A8D5 /* ShaniApp2 */,
+				C69893E6215CBED100485033 /* ShaniApp2UITests */,
 				C67E1192213429F100E4A8D5 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -51,6 +80,7 @@
 			isa = PBXGroup;
 			children = (
 				C67E1191213429F100E4A8D5 /* ShaniApp2.app */,
+				C69893E5215CBED100485033 /* ShaniApp2UITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -58,16 +88,36 @@
 		C67E1193213429F100E4A8D5 /* ShaniApp2 */ = {
 			isa = PBXGroup;
 			children = (
-				C67E11A8213442E300E4A8D5 /* AddTaskController.swift */,
-				C67E1194213429F100E4A8D5 /* AppDelegate.swift */,
-				C67E1196213429F100E4A8D5 /* ViewController.swift */,
+				C67E1196213429F100E4A8D5 /* TodoListVC.swift */,
 				C67E11A62134346900E4A8D5 /* TaskCell.swift */,
+				C67E11A8213442E300E4A8D5 /* AddTaskController.swift */,
+				C6095306214E864600F80F7A /* Networking.swift */,
+				C69893DF215BA25900485033 /* Caching.swift */,
+				C623CE1B21650E49007983FB /* TaskModeling.swift */,
 				C67E1198213429F100E4A8D5 /* Main.storyboard */,
-				C67E119B213429F200E4A8D5 /* Assets.xcassets */,
-				C67E119D213429F200E4A8D5 /* LaunchScreen.storyboard */,
 				C67E11A0213429F200E4A8D5 /* Info.plist */,
+				C67E11AA2135948300E4A8D5 /* Supporting Files */,
 			);
 			path = ShaniApp2;
+			sourceTree = "<group>";
+		};
+		C67E11AA2135948300E4A8D5 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C67E1194213429F100E4A8D5 /* AppDelegate.swift */,
+				C67E119B213429F200E4A8D5 /* Assets.xcassets */,
+				C67E119D213429F200E4A8D5 /* LaunchScreen.storyboard */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C69893E6215CBED100485033 /* ShaniApp2UITests */ = {
+			isa = PBXGroup;
+			children = (
+				C69893E7215CBED100485033 /* ShaniApp2UITests.swift */,
+				C69893E9215CBED100485033 /* Info.plist */,
+			);
+			path = ShaniApp2UITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -90,6 +140,24 @@
 			productReference = C67E1191213429F100E4A8D5 /* ShaniApp2.app */;
 			productType = "com.apple.product-type.application";
 		};
+		C69893E4215CBED100485033 /* ShaniApp2UITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C69893EC215CBED100485033 /* Build configuration list for PBXNativeTarget "ShaniApp2UITests" */;
+			buildPhases = (
+				C69893E1215CBED100485033 /* Sources */,
+				C69893E2215CBED100485033 /* Frameworks */,
+				C69893E3215CBED100485033 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C69893EB215CBED100485033 /* PBXTargetDependency */,
+			);
+			name = ShaniApp2UITests;
+			productName = ShaniApp2UITests;
+			productReference = C69893E5215CBED100485033 /* ShaniApp2UITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -101,6 +169,10 @@
 				TargetAttributes = {
 					C67E1190213429F100E4A8D5 = {
 						CreatedOnToolsVersion = 9.4.1;
+					};
+					C69893E4215CBED100485033 = {
+						CreatedOnToolsVersion = 9.4.1;
+						TestTargetID = C67E1190213429F100E4A8D5;
 					};
 				};
 			};
@@ -118,6 +190,7 @@
 			projectRoot = "";
 			targets = (
 				C67E1190213429F100E4A8D5 /* ShaniApp2 */,
+				C69893E4215CBED100485033 /* ShaniApp2UITests */,
 			);
 		};
 /* End PBXProject section */
@@ -133,6 +206,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C69893E3215CBED100485033 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -140,14 +220,34 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C67E1197213429F100E4A8D5 /* ViewController.swift in Sources */,
+				C67E1197213429F100E4A8D5 /* TodoListVC.swift in Sources */,
+				C623CE1C21650E49007983FB /* TaskModeling.swift in Sources */,
+				C6095307214E864600F80F7A /* Networking.swift in Sources */,
 				C67E11A72134346900E4A8D5 /* TaskCell.swift in Sources */,
+				C69893E0215BA25900485033 /* Caching.swift in Sources */,
 				C67E11A9213442E300E4A8D5 /* AddTaskController.swift in Sources */,
 				C67E1195213429F100E4A8D5 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C69893E1215CBED100485033 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C69893EF215CE83700485033 /* TodoListVC.swift in Sources */,
+				C69893E8215CBED100485033 /* ShaniApp2UITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C69893EB215CBED100485033 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C67E1190213429F100E4A8D5 /* ShaniApp2 */;
+			targetProxy = C69893EA215CBED100485033 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		C67E1198213429F100E4A8D5 /* Main.storyboard */ = {
@@ -319,6 +419,42 @@
 			};
 			name = Release;
 		};
+		C69893ED215CBED100485033 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = ShaniApp2UITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.ShaniApp2UITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ShaniApp2;
+			};
+			name = Debug;
+		};
+		C69893EE215CBED100485033 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = ShaniApp2UITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.ShaniApp2UITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ShaniApp2;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -336,6 +472,15 @@
 			buildConfigurations = (
 				C67E11A4213429F200E4A8D5 /* Debug */,
 				C67E11A5213429F200E4A8D5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C69893EC215CBED100485033 /* Build configuration list for PBXNativeTarget "ShaniApp2UITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C69893ED215CBED100485033 /* Debug */,
+				C69893EE215CBED100485033 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
