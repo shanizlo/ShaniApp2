@@ -54,6 +54,7 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
         return cell
     }
     
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let addTaskController = segue.destination as! AddTaskController
         addTaskController.addTaskDelegate = self
@@ -62,9 +63,11 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
         }
     }
 
+    
     func backToTableView() {
         navigationController?.popViewController(animated: true)
     }
+    
     
     func taskAddTap(name: String) {
         tasksTodoLocal.append(TaskModeling.TaskTodo(id: 1, title: name, completed: false)) //some temp task because id will be known only after POST
@@ -75,7 +78,6 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
         networking.taskAddedPOST(name: name) { [weak self] in
             self?.tasksTodoLocal = (self?.networking.loadDataFromCacheToArray())!
             self?.reloadUpdateList()
-//            self?.navigationController?.popViewController(animated: true)
             print("task added")
         }
     }
@@ -98,6 +100,7 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
                 }
             }
         }
+    
     
     func deleteTaskButtonTap(_ cell: TaskCell) {
         

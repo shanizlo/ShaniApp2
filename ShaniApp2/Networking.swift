@@ -53,8 +53,12 @@ class Networking {
         let url = URLMethods.all.getUrl()
 
         session.dataTask(with: url!) { [weak self] (data, response, error) in
-
-            guard let jsonData = data else { return }
+            
+            guard let jsonData = data, error == nil else {
+                
+                print(error?.localizedDescription)
+                return
+            }
 
             let tasks = (self?.taskModeling.jsonToArrayOfTasksSorted(json: jsonData))!
 
