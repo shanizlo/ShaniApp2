@@ -10,6 +10,7 @@ import Foundation
 class Caching {
     
     let defaults = UserDefaults.standard
+    // DONE * TODO: Move "Saved Tasks" to be a `let` parameter, and use it in all occurences * it made me using !
     
     func saveToCache(data: Any, key: String) {
         defaults.set(data, forKey: key)
