@@ -17,11 +17,25 @@ class Networking {
         
         static var baseURL = "http://ec2-52-32-105-2.us-west-2.compute.amazonaws.com:8080/"
         
+        var httpMethod : String {
+            switch self {
+            case .all:
+                return "GET"
+            case .new:
+                return "POST"
+            case .update:
+                return "POST"
+            case .delete:
+                return "DELETE"
+            }
+        }
+        
         var urlString : String {
                 return "\(URLMethods.baseURL)/\(rawValue)"
         }
         
         func getUrlFor(id: Int) -> URL? { //Not sure if this is right to do - I want this to return URL not string
+            
             if let url = URL(string: "\(urlString)/\(id)") {
                 return url
             } else { return nil }
@@ -34,7 +48,6 @@ class Networking {
         }
     }
     
-
     let caching = Caching()
     let taskModeling = TaskModeling()
     
@@ -62,7 +75,9 @@ class Networking {
                 print(error?.localizedDescription)
                 return
             }
-
+            
+//            guard let tasks = self?.taskModeling.dataToArrayOfTasksSorted(jsonData: jsonData) as? [TaskModeling.TaskTodo()] else { return }
+//
             let tasks = (self?.taskModeling.dataToArrayOfTasksSorted(jsonData: jsonData))!
 
             // TODO: Don't know how to avoid ! here
@@ -82,7 +97,7 @@ class Networking {
         let url = URLMethods.new.getUrl()
         
         var request = URLRequest(url: url!)
-        request.httpMethod = "POST"
+        request.httpMethod = URLMethods.new.httpMethod
         request.httpBody = jsonDataToPost
         
         perform(request: request, completion: completion)
@@ -96,7 +111,7 @@ class Networking {
         let url = URLMethods.update.getUrlFor(id: task.id)
         
         var request = URLRequest(url: url!)
-        request.httpMethod = "PUT"
+        request.httpMethod = URLMethods.update.httpMethod
         request.httpBody = jsonDataToPut
         
         perform(request: request, completion: completion)
@@ -108,7 +123,7 @@ class Networking {
         let url = URLMethods.delete.getUrlFor(id: id)
         
         var request = URLRequest(url: url!)
-        request.httpMethod = "DELETE"
+        request.httpMethod = URLMethods.delete.httpMethod
         
         perform(request: request, completion: completion)
     }
