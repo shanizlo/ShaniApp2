@@ -10,16 +10,16 @@ import Foundation
 class Caching {
     
     let defaults = UserDefaults.standard
-    // DONE * TODO: Move "Saved Tasks" to be a `let` parameter, and use it in all occurences * it made me using !
+    let keySavedTasks: String = "Saved Tasks"
     
-    func saveToCache(data: Any, key: String) {
-        defaults.set(data, forKey: key)
+    func saveToCache(data: Any) {
+        defaults.set(data, forKey: keySavedTasks)
         print("saved to cache")
     }
     
     
     func pullFromCache() -> Data? {
-        return self.defaults.object(forKey: "Saved Tasks") as? Data
+        return self.defaults.object(forKey: keySavedTasks) as? Data
         print("pulled from cache")
     }
     
