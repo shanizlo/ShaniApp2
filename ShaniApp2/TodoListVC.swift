@@ -19,7 +19,7 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
         print("view loaded from cache")
         reloadUpdateList()
         
-        //ToReview: pull to refresh added
+        //TODO: ToReview: pull to refresh added * Please review
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(pullToRefresh), for: UIControlEvents.valueChanged)
         self.refreshControl = refreshControl
@@ -31,6 +31,9 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
     }
     
     func reloadUpdateList() {
+        //TODO: * Don't know how to
+        // If completion is the last argument in function signature, it can be presented as a trailing closure:
+        // networking.getJsonFromUrl { [weak self] tasks in ... }
         networking.getTasksGET(completion: { [weak self] tasks in
             self?.tasksTodoLocal = tasks
             self?.tableView.reloadData()
@@ -48,6 +51,8 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell" , for: indexPath) as? TaskCell else { return UITableViewCell() }
         
+        // TODO: * Create a `setup()` function in the TaskCell class, and move all of the cell setup logic there.
+        // * not sure how to do it - I use a lot of local array here
         cell.taskNameLabel.text = (indexPath.item < tasksTodoLocal.count ) ? tasksTodoLocal[indexPath.item].title : ""
         
         let cellTitle = tasksTodoLocal[indexPath.row].completed ? "✓" : ""
@@ -81,6 +86,9 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
         self.tableView.reloadData()
         self.navigationController?.popViewController(animated: true)
         networking.taskAddedPOST(name: name) { [weak self] in
+            
+        // TODO: * Avoid using `!` * when trying to compile it doesn't work
+        // * this is what I tried to do but it doesn't work
             
 //            guard self?.tasksTodoLocal = self?.networking.loadDataFromCacheToArray() as? [TaskModeling.TaskTodo] else { return }
             

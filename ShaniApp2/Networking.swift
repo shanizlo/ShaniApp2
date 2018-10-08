@@ -35,13 +35,15 @@ class Networking {
         }
         
         func getUrlFor(id: Int) -> URL? { //Not sure if this is right to do - I want this to return URL not string
-            
+            // TODO: * You can just return it like this, as the `URL(string:` initializer returns URL? as well:
+            // return URL(string: "\(urlString)/\(id)") * - it doesn't work
             if let url = URL(string: "\(urlString)/\(id)") {
                 return url
             } else { return nil }
         }
         
         func getUrl() -> URL? {
+            // TODO: * Same as above: `return URL(string: urlString)`
             if let url = URL(string: urlString) {
                 return url
             } else { return nil }
@@ -67,7 +69,8 @@ class Networking {
     func getTasksGET(completion: @escaping (_ tasks: [TaskModeling.TaskTodo]) -> Void) {
 
         let url = URLMethods.all.getUrl()
-
+        
+         // TODO: * Avoid using `!` * don't know how to unwrap the parameter
         session.dataTask(with: url!) { [weak self] (data, response, error) in
             
             guard let jsonData = data, error == nil else {
@@ -76,8 +79,9 @@ class Networking {
                 return
             }
             
+            // TODO: * Avoid using `!` * tried to unwrap this way - but it doesn't work:
 //            guard let tasks = self?.taskModeling.dataToArrayOfTasksSorted(jsonData: jsonData) as? [TaskModeling.TaskTodo()] else { return }
-//
+
             let tasks = (self?.taskModeling.dataToArrayOfTasksSorted(jsonData: jsonData))!
 
             // TODO: Don't know how to avoid ! here
@@ -103,6 +107,7 @@ class Networking {
         perform(request: request, completion: completion)
     }
 
+    // * TODO: `taskUpdatePUT`, and `taskAddedPOST` are almost the same. Think how can you join them (maybe even together with DELETE). * Need time for it - will resolve later after resolving the url unwrapping
     
     func taskUpdatePUT(task: TaskModeling.TaskTodo, completion: @escaping () -> Void) {
        
@@ -137,6 +142,7 @@ class Networking {
     
     func perform(request: URLRequest, completion: @escaping () -> Void) {
         session.dataTask(with: request) {(data, response, error) in
+            // * TODO: Aren't you doing something with the returned data?
             if let response = response {
                 print(response)
             }
