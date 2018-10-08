@@ -16,17 +16,9 @@ class TaskCell: UITableViewCell {
 
     weak var taskCellDelegate: TaskCellDelegate?
     
-    var changeButtonCompletion: (() -> Void)?
-    
-    var deleteTaskCompletion: (() -> Void)?
-    
     @IBOutlet weak var checkBoxOutlet: UIButton!
-    
-    @IBOutlet weak var deleteOutlet: UIButton!
-    
+        
     @IBOutlet weak var taskNameLabel: UILabel!
-    
-    @IBOutlet weak var taskCellRow: UIView!
     
     @IBAction func checkBoxAction(_ sender: Any) {
         taskCellDelegate?.changeCompletedButtonTap(self)

@@ -15,7 +15,7 @@ class Networking {
         case update
         case delete
         
-        static var baseURL = "http://ec2-52-32-105-2.us-west-2.compute.amazonaws.com:8080/"
+        static var baseURL = "http://ec2-52-32-105-2.us-west-2.compute.amazonaws.com:8080"
         
         var httpMethod : String {
             switch self {
@@ -24,7 +24,7 @@ class Networking {
             case .new:
                 return "POST"
             case .update:
-                return "POST"
+                return "PUT"
             case .delete:
                 return "DELETE"
             }
@@ -106,7 +106,7 @@ class Networking {
     
     func taskUpdatePUT(task: TaskModeling.TaskTodo, completion: @escaping () -> Void) {
        
-        let jsonDataToPut = getJsonParameters(id: task.id, name: task.title, completed: !task.completed)
+        let jsonDataToPut = getJsonParameters(id: task.id, name: task.title, completed: task.completed)
         
         let url = URLMethods.update.getUrlFor(id: task.id)
         

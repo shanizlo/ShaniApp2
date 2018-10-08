@@ -104,7 +104,7 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
             print("task updated locally")
             
             networking.taskUpdatePUT(task: tempTask) { [weak self] in
-                self?.reloadUpdateList()
+//                self?.reloadUpdateList()
                 print("task updated")
                 }
             }
