@@ -96,8 +96,6 @@ class Networking {
         perform(request: request, completion: completion)
     }
 
-    // * TODO: `taskUpdatePUT`, and `taskAddedPOST` are almost the same. Think how can you join them (maybe even together with DELETE). * Need time for it - will resolve later after resolving the url unwrapping
-    
     func taskUpdatePUT(task: TaskModeling.TaskTodo, completion: @escaping () -> Void) {
        
         let jsonDataToPut = getJsonParameters(id: task.id, name: task.title, completed: task.completed)
@@ -120,6 +118,20 @@ class Networking {
         request.httpMethod = URLMethods.delete.httpMethod
         
         perform(request: request, completion: completion)
+    }
+    
+    //Delete, Put, for Post request need to call func with tempTask, also need to think about id suffix
+    func makeURLRequest(requestType: URLMethods, task: TaskModeling.TaskTodo, completion: @escaping () -> Void){
+        
+        let jsonDataForRequest = getJsonParameters(id: task.id, name: task.title, completed: task.completed)
+        let url = requestType.getUrlFor(id: task.id)
+        var request = URLRequest(url: url!)
+        
+        request.httpMethod = requestType.httpMethod
+        request.httpBody = jsonDataForRequest
+        
+        perform(request: request, completion: completion)
+        
     }
     
     
