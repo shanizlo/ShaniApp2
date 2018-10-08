@@ -48,7 +48,7 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell" , for: indexPath) as? TaskCell else { return UITableViewCell() }
         
-        cell.taskNameLabel.text = tasksTodoLocal[indexPath.item].title
+        cell.taskNameLabel.text = (indexPath.item < tasksTodoLocal.count ) ? tasksTodoLocal[indexPath.item].title : ""
         
         let cellTitle = tasksTodoLocal[indexPath.row].completed ? "✓" : ""
         cell.checkBoxOutlet.setTitle(cellTitle, for: UIControlState.normal)
@@ -96,7 +96,7 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
         
         if let indexPathForCell = tableView.indexPath(for: cell) {
             
-            let tempTask = tasksTodoLocal[indexPathForCell.row]
+            let tempTask = (indexPathForCell.row < tasksTodoLocal.count) ? tasksTodoLocal[indexPathForCell.row] : TaskModeling.TaskTodo()
             
             tasksTodoLocal[indexPathForCell.row].completed = !tempTask.completed
             tasksTodoLocal.sort { $0.completed && !$1.completed }
@@ -115,7 +115,7 @@ class TodoListVC: UITableViewController, AddTaskDelegate, TaskCellDelegate {
         
         if let indexPathForCell = tableView.indexPath(for: cell) {
             
-            let idToDelete = tasksTodoLocal[indexPathForCell.row].id
+            let idToDelete = (indexPathForCell.row < tasksTodoLocal.count) ? tasksTodoLocal[indexPathForCell.row].id : 0
             
             tasksTodoLocal.remove(at: indexPathForCell.row)
             self.tableView.reloadData()

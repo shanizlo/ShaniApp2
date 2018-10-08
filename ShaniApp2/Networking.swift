@@ -37,6 +37,8 @@ class Networking {
 
     let caching = Caching()
     let taskModeling = TaskModeling()
+    
+    let savedTasksKey = "Saved Tasks"
 
     var tempID = 1
     var indexT = 0
@@ -45,7 +47,7 @@ class Networking {
     
     func loadDataFromCacheToArray() -> [TaskModeling.TaskTodo] {
         guard let resultsFromCache = caching.pullFromCache() else { return [TaskModeling.TaskTodo]() }
-        return taskModeling.jsonToArrayOfTasksSorted(json: resultsFromCache)
+        return taskModeling.dataToArrayOfTasksSorted(jsonData: resultsFromCache)
     }
     
     
@@ -61,9 +63,10 @@ class Networking {
                 return
             }
 
-            let tasks = (self?.taskModeling.jsonToArrayOfTasksSorted(json: jsonData))!
+            let tasks = (self?.taskModeling.dataToArrayOfTasksSorted(jsonData: jsonData))!
 
-            self?.caching.saveToCache(data: jsonData)
+            // TODO: Don't know how to avoid ! here
+            self?.caching.saveToCache(data: jsonData,key: (self?.savedTasksKey)!)
 
             DispatchQueue.main.async {
                 completion(tasks)
