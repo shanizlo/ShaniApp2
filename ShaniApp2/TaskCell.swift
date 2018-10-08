@@ -29,4 +29,11 @@ class TaskCell: UITableViewCell {
     }
     
     var indexP: Int?
+    
+    func setup(title: String, checkBoxTitle: String, delegate: TaskCell, indexPath: Int) {
+        taskNameLabel.text = title
+        delegate.checkBoxOutlet.setTitle(checkBoxTitle, for: UIControlState.normal)
+        delegate.taskCellDelegate = delegate as? TaskCellDelegate
+        delegate.indexP = indexPath
+    }
 }
